@@ -1,0 +1,24 @@
+---
+title: "Visualizing Incarceration Data"
+author: "Vianne Buinguyen"
+date: "2/24/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library("plotly")
+library("tidyverse")
+library("rjson")
+source("../source/analysis.R")
+```
+```{r}
+plot(line_chart)
+```
+```{r}
+plot(scatter_plot)
+```
+
+```{r}
+fig
+```
+
