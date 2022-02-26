@@ -11,14 +11,75 @@ library("tidyverse")
 library("rjson")
 source("../source/analysis.R")
 ```
-```{r}
+
+
+
+# Intoduction
+The purpose of this report is to analyze and visualize United States county-level trends in incarceration--specifically the incarceration of people of color. The dataset used contains county-level data on prison and jail incarceration and related measures from 1970 to 2018 in the US. It was assembled by the [**Vera Institute of Justice**](https://www.vera.org/) using information collected by the [**US Department of Justice Bureau of Justice Statistics**](https://bjs.ojp.gov/). To better understand the trends in the disproportionate incarceration of people of color, I wanted to analyze three specific variables:
+
+
+1. `black_prison_adm`: Total prison admissions of Black people in each county in a given year.
+
+2. `latinx_prison_adm`: Total prison admissions of Latinx people in each county in a given year.
+
+3. `black_jail_pop`: Average daily number of Black people held in jail in each county through December 31 of a given year.
+
+
+According to a report written by [**The Sentencing Project**](https://www.sentencingproject.org/), "Black Americans are incarcerated in state prisons across the country at nearly five times the rate of whites, and Latinx people are 1.3 times as likely to be incarcerated than non-Latinx whites" (Nellis, 2021). Therefore, I will compare Black and Latinx prison admissions to the prison admissions of other races (i.e., white, Native, and Asian and Pacific Islander) to identify how Black and Latinx incarceration rates differ from that of other races. 
+
+Second, I am curious to know whether the incarceration rates of one minority group affects the incarceration rates of another minority group. Therefore, I will determine whether there is a relationship between Black and Latinx prison admissions.
+
+Lastly, I want to find the proportion of the jail population that is Black (`black_jail_pop`/`total_jail_pop`) in all counties across the US to determine which counties imprison a greater proportion of Black people and learn the reasons driving this inequality.
+
+
+
+# Summary Information
+I found that the average US proportion of the jail population that is Black in 2018 is roughly **22.9%**. This percentage is considerably higher than the percentage of the US population that was Black in 2018, which is only 14.6% according to the 2018 US Census (World Population Review). This nearly 8% gap between the proportion of the population that is Black and the proportion of the *jail* population that is Black points the the disproportionate incarceration of Black people. Next, I found that the county with the highest proportion of people in jail who are Black in 2018 was **Caswell County**, North Carolina. On the other hand, there were many counties in which 0% of the of the jail proportion was Black. However, I simply stored the first occurrence, which is **Bethel Census Area, Alaska**. The *The Sentencing Project* report suggests three causes for this disparity in Black incarceration rates. The first reason is America's legacy of racial subordination. Survey data found that respondents associated Black people with terms like "dangerous", "violent", and "criminal". People's perceptions about Blacks being threats to public safety negatively impacts the punishment of Blacks. The second reason is biased policies and practices. A study of more that 60 million police stops between 2011 and 2015 across the US shows Black drivers are more likely to be ticketed, searched, and arrested than white drivers. Similarly, Blacks are nearly 4 times more likely to be arrested for low-level drug offenses than whites even though black and white individuals use and sell drugs at comparable levels. The third reason is structural disadvantages. Blacks account for a disproportionate share of people living in poverty-stricken communities where socioeconomic vulnerabilities contribute to a higher rate of crime. Therefore, Casewell County, NC likely has greater levels of racial prejudice, more biased policing practices, and higher proportions of Black people facing socioeconomic vulnerabilities than Bethel Census Area, AK, leading to it having a higher percentage of Black jail inmates. Lastly, I found that the highest number of Black and Latinx prison admissions in Washington from 1970 to 2018 were **1,509** and **840**, respectively. In the next chart, I will be able to compare the count of Black and Latinx prison admissions in Washington to other races and draw further conclusions. Below is a comprehensive list of the summary values I computed:
+
+
+  **1. Average US proportion of the jail population that is Black in 2018:** `r summary_info$avg_black_jail_pop_prop_2018`
+  
+  **2. County with the highest proportion of people in jail who are Black:** Caswell County, NC
+  
+  **3. County with the lowest proportion of people in jail who are Black:** Bethel Census Area, AK
+  
+  **4. Highest number of Black prison admissions in Washington in all years:** 1,509
+  
+  **5. Highest number of Latinx prison admissions in Washington in all years:** 840
+  
+
+
+# Trends Over Time: Viewing Prison Admissions Over Time by Race in Washington
+I included this chart to examine prison admissions by race to see if Black and Latinx people were disproportionately incarcerated in Washington compared to whites, Natives, and Asian and Pacific Islanders. I designed the chart to have 5 lines, each with a unique color to represent the prison admissions count for Blacks, Latinxs, whites, Natives, and AAPIs from 1970 to 2018. While I expected prison admissions for Black and Latinx people to be the highest of all the races, I was surprised to see that prison admissions for whites exceeded that of any other race by many multiples and grew at a much faster rate. I did some research to understand why prison admissions for whites surpassed that of Black and Latinx people. My chart findings are confirmed by data from the Bureau of Justice Statistics which shows that the imprisonment rate for Blacks are dropping, while that of whites are rising: “since 2000, the rate of being jailed increased 41 percent among Whites while declining 22 percent among African Americans” (Humphreys, 2021). Keith Humphreys, a professor at Stanford University, claims that the drop in Black incarceration rates can likely be explained by a collapse in urban crime. 
+
+```{r, echo=FALSE}
 plot(line_chart)
 ```
-```{r}
+
+
+
+# Variable Comparison: Viewing the Relationship between Black Prison Admissions and Latinx Prison Admissions
+I included this chart to determine if there is a relationship between Black prison admissions and Latinx prison admissions. Specifically, I wanted to see if the number of Black prison admissions affected the number of Latinx prison admissions in the same county in a given year. I designed the scatter plot with Black prison admissions as the x variable since it is the explanatory variable and Latinx prison admissions as the y variable since it is the response variable. After plotting the chart, Black prison admissions does not seem to be a good predictor of Latinx prison admissions. However, there still appears to be some association. There is one group of points resembling a straight line which indicates a possible positive linear relationship--meaning Latinx prison admissions increase by approximately the same rate as Black prison admissions. However, the correlation is weak because not all the observations are grouped close together to form a linear shape. Any relationship between Black and Latinx prison admissions can likely be explained by the 3 factors previously described in the "Summary Information" section. If a county's citizens associates Blacks with "criminals" they are likely to be racially prejudiced against Latinxs in a similar way. Likewise, policing practices that are biased against Blacks are also likely to be biased against Latinxs. Lastly, poverty rates between Blacks and Latinxs are likely to be similarly low. With this in mind, it makes sense that Latinx prison admissions might increase with Black prison admissions.
+```{r, echo=FALSE}
 plot(scatter_plot)
 ```
 
-```{r}
+
+
+# Map: Viewing the Proportion of the Jail Population that is Black by US County in 2018
+For this last chart, I wanted to see how the percentage of people in jail who are Black differed by US county in 2018 (the most recent year in the dataset). I designed this map to use color to visualize the distribution of this percentage, with the lowest value 0 being a dark purple and the highest value 1 being a bright yellow. The map shows southeastern US counties having the highest percentages of people in jail who are black. Most of the values in this region are green and yellow and range from 0.5 to close to 1. This comes as no surprise since whites in southern states have a higher rate of bias against Blacks due to their racist roots. A research team at the University of North Carolina reveals, "counties and states more dependent on slavery before the Civil War display higher levels of pro-white implicit bias today" (Jacobs, 2019). A higher level of racial prejudice likely means biased policing against Blacks, thus leading to the higher proportion of Blacks arrested that is seen in the map. 
+
+```{r, echo=FALSE}
 fig
 ```
 
+
+
+# References
+Black Population by State 2022. (2022). World Population Review. Retrieved February 25, 2022, from         https://worldpopulationreview.com/state-rankings/black-population-by-state
+
+Humphreys, K. (2021, February 26). Prisons are getting Whiter. That’s one way mass incarceration might end. The Washington Post. Retrieved February 25, 2022, from https://www.washingtonpost.com/outlook/prisons-are-getting-whiter-thats-one-way-mass-incarceration-might-end/2021/02/26/28db008c-7535-11eb-948d-19472e683521_story.html
+
+Jacobs, T. (2019, May 24). One Reason Why White People in Southern States Still Have a Higher Rate of Bias Against Black Americans. Pacific Standard. Retrieved February 25, 2022, from https://psmag.com/news/why-white-people-in-southern-states-still-have-a-higher-rate-of-bias-against-black-americans
+
+Nellis, Ph.D, A. (2021, October). The Color of Justice: Racial and Ethnic Disparity in State Prisons. The Sentencing Project. http://cdn.cnn.com/cnn/2021/images/10/13/the-color-of-justice-racial-and-ethnic-disparity-in-state-prisons.pdf 
